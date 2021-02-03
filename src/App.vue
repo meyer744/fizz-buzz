@@ -75,6 +75,10 @@ li {
   border-radius: 6px;
 }
 
+li:hover {
+  transform: scale(.9);
+}
+
 .fizz {
   color: red;
 }
