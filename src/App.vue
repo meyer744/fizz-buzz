@@ -1,33 +1,38 @@
 <template>
   <div>
-    <button @click="runFizzBuzz">{{ fizzBuzzButton }}</button>
-    <ul>
-      <li :class="n === 'fizz buzz' ? 'fizzbuzz' : n" v-for="(n, i) in fizzBuzz" :key="i">{{ n }}</li>
-    </ul>
+    <h1>Fizz Buzz Vue</h1>
+    <range-selection
+      @fromValue="setFromValue"
+      @toValue="setToValue"
+      @runFizzBuzz="runFizzBuzz"
+      :fizzBuzzButton="fizzBuzzButton"
+    ></range-selection>
+    <!-- <button @click="runFizzBuzz">{{ fizzBuzzButton }}</button> -->
+    <fizz-buzz :fizzBuzz="fizzBuzz"></fizz-buzz>
   </div>
 </template>
 
 <script>
+import RangeSelection from "./components/RangeSelection.vue";
+import FizzBuzz from "./components/FizzBuzz.vue";
 export default {
   name: "App",
-  computed: {
-    fizzBuzzButton() {
-      if(this.fizzBuzz.length < 1) {
-        return 'Run Fizz Buzz';
-      } else {
-        return 'Clear'
-      }
-    }
-  },
-  data() {
-    return {
-      fizzBuzz: [],
-    };
+  components: {
+    RangeSelection,
+    FizzBuzz,
   },
   methods: {
+    setFromValue(v) {
+      this.fromValue = v;
+      console.log(this.fromValue);
+    },
+    setToValue(v) {
+      this.toValue = v;
+      console.log(this.toValue);
+    },
     runFizzBuzz() {
       if (this.fizzBuzz.length < 1) {
-        for (let i = 1; i <= 100; i++) {
+        for (let i = this.fromValue; i <= this.toValue; i++) {
           if (i % 3 === 0 && i % 5 === 0) {
             this.fizzBuzz.push("fizz buzz");
           } else if (i % 3 === 0 && i % 5 != 0) {
@@ -38,68 +43,46 @@ export default {
             this.fizzBuzz.push(i.toString());
           }
         }
+        console.log(this.fizzBuzz);
+        console.log(this.to);
+        console.log(this.from);
       } else {
         this.fizzBuzz = [];
       }
     },
   },
+  computed: {
+    fizzBuzzButton() {
+      if (this.fizzBuzz.length < 1) {
+        return "Run Fizz Buzz";
+      } else {
+        return "Clear";
+      }
+    },
+  },
+  data() {
+    return {
+      fizzBuzz: [],
+      fromValue: null,
+      toValue: null,
+    };
+  },
 };
 </script>
 
-<style>
-@import"https://fonts.googleapis.com/css2?family=Russo+One&display=swap";
+<style scoped>
+@import "https://fonts.googleapis.com/css2?family=Russo+One&display=swap";
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  max-width: 400px;
-  margin: auto;
-}
-
-
-ul {
-  list-style: none;
+div {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
 
-li {
-  padding: 15px;
-  margin: 5px;
-  border-style: solid;
-  border-radius: 6px;
-}
-
-li:hover {
-  transform: scale(.9);
-}
-
-.fizz {
-  color: red;
-}
-
-.buzz {
-  color: green;
-}
-
-.fizzbuzz {
-  color: blue;
-}
-
-button {
-  margin-top: 20px;
-  font-family: 'Russo One', sans-serif;
-  background-color: transparent;
-  border-style: solid;
-  border-radius: 5px;
-  border-width: 4px;
-  border-color: black;
-  padding: 10px;
-  font-size: 30px
+h1 {
+  font-size: 60px;
+  font-family: "Russo One", sans-serif;
+  color: #41B783;
+  text-align: center;
 }
 </style>
